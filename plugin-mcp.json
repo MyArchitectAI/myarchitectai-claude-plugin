@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "myarchitectai": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "myarchitectai-mcp"],
+      "env": {
+        "MYARCHITECTAI_API_KEY": "${user_config.api_key}"
+      }
+    }
+  }
+}
