@@ -9,7 +9,7 @@ guided render command.
 - **MCP server** `myarchitectai` — 10 tools: exterior/interior render, style transfer,
   text-to-image, 4K upscale, plus `preview_image`, `save_image`, `validate_image_url`,
   `usage_summary`, and `list_recent_generations`. Launched via `npx` from the
-  [`@myarchitectai/mcp`](../my-architect-ai-mcp) package.
+  [`@myarchitectai/mcp`](https://www.npmjs.com/package/@myarchitectai/mcp) npm package.
 - **Skill** `/myarchitectai:compare-renders` — multimodal comparison of two images (source vs
   render, render vs 4K upscale, or competing variants).
 - **Command** `/myarchitectai:render` — guided validate → render → preview → save workflow.
@@ -26,12 +26,11 @@ get one at https://portal.myarchitectai.com) and injects it as `MYARCHITECTAI_AP
 
 ## How the MCP server is launched
 
-[`plugin-mcp.json`](./plugin-mcp.json) runs `npx -y @myarchitectai/mcp`, so the plugin pulls the
-published server. **This requires the `@myarchitectai/mcp` package to be published to npm first**
-(its name is still a placeholder — see the MCP repo's publishing checklist).
+[`plugin-mcp.json`](./plugin-mcp.json) runs `npx -y @myarchitectai/mcp`, fetching the latest
+published version of the server from npm on first launch.
 
-**Local development (before publishing):** point the server at a local build of the sibling MCP
-repo instead — edit `plugin-mcp.json`:
+**Local development:** to point the server at a local build of the sibling MCP repo instead, edit
+`plugin-mcp.json`:
 
 ```json
 {
@@ -39,18 +38,19 @@ repo instead — edit `plugin-mcp.json`:
     "myarchitectai": {
       "type": "stdio",
       "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/../my-architect-ai-mcp/dist/index.js"],
+      "args": ["${CLAUDE_PLUGIN_ROOT}/../myarchitectai-api-mcp/dist/index.js"],
       "env": { "MYARCHITECTAI_API_KEY": "${user_config.api_key}" }
     }
   }
 }
 ```
 
-This assumes the workspace layout `my-architect-ai/{my-architect-ai-mcp,my-architect-ai-plugin}` and
-a built `dist/` in the MCP repo (`npm run build` there). Then test with:
+This assumes both repos are checked out side-by-side (e.g.
+`MyArchitect/{myarchitectai-api-mcp,myarchitectai-claude-plugin}`) and a built `dist/` in the MCP
+repo (`npm run build` there). Then test with:
 
 ```
-claude --plugin-dir /absolute/path/to/my-architect-ai-plugin
+claude --plugin-dir /absolute/path/to/myarchitectai-claude-plugin
 ```
 
 ## Layout
@@ -66,7 +66,7 @@ commands/render.md
 
 ## Related
 
-- MCP server source & docs: [`my-architect-ai-mcp`](../my-architect-ai-mcp)
+- MCP server source & docs: [`myarchitectai-api-mcp`](https://github.com/MyArchitectAI/myarchitectai-api-mcp)
 
 ## License
 
