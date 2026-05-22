@@ -6,7 +6,7 @@
   "version": "0.1.0",
   "author": { "name": "Justin Clapperton" },
   "homepage": "https://www.myarchitectai.com",
-  "repository": "https://github.com/your-org/myarchitectai-mcp",
+  "repository": "https://github.com/MyArchitectAI/myarchitectai-claude-plugin",
   "license": "MIT",
   "keywords": ["mcp", "architecture", "ai-rendering", "myarchitectai", "render"],
   "mcpServers": "./plugin-mcp.json",
