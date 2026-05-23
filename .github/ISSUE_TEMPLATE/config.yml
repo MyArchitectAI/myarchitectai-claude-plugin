@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Rendering tool / server bugs
+    url: https://github.com/MyArchitectAI/myarchitectai-api-mcp/issues
+    about: Problems with the rendering tools or server behavior belong in the MCP server repo.
+  - name: MyArchitectAI account, billing & credits
+    url: https://www.myarchitectai.com
+    about: Account, credit, or billing questions — not plugin bugs.
+  - name: Get or rotate an API key
+    url: https://portal.myarchitectai.com
+    about: Create or rotate your MyArchitectAI API key.

@@ -1,5 +1,7 @@
 # MyArchitectAI — Claude Code plugin
 
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
+
 A [Claude Code](https://code.claude.com) plugin that bundles the
 [MyArchitectAI](https://www.myarchitectai.com) MCP server plus a render-comparison skill and a
 guided render command.
@@ -9,7 +11,7 @@ guided render command.
 - **MCP server** `myarchitectai` — 10 tools: exterior/interior render, style transfer,
   text-to-image, 4K upscale, plus `preview_image`, `save_image`, `validate_image_url`,
   `usage_summary`, and `list_recent_generations`. Launched via `npx` from the
-  [`@myarchitectai/mcp`](../my-architect-ai-mcp) package.
+  [`@myarchitectai/mcp`](https://www.npmjs.com/package/@myarchitectai/mcp) package.
 - **Skill** `/myarchitectai:compare-renders` — multimodal comparison of two images (source vs
   render, render vs 4K upscale, or competing variants).
 - **Command** `/myarchitectai:render` — guided validate → render → preview → save workflow.
@@ -27,8 +29,7 @@ get one at https://portal.myarchitectai.com) and injects it as `MYARCHITECTAI_AP
 ## How the MCP server is launched
 
 [`plugin-mcp.json`](./plugin-mcp.json) runs `npx -y @myarchitectai/mcp`, so the plugin pulls the
-published server. **This requires the `@myarchitectai/mcp` package to be published to npm first**
-(its name is still a placeholder — see the MCP repo's publishing checklist).
+published [`@myarchitectai/mcp`](https://www.npmjs.com/package/@myarchitectai/mcp) server from npm.
 
 **Local development (before publishing):** point the server at a local build of the sibling MCP
 repo instead — edit `plugin-mcp.json`:
@@ -66,8 +67,14 @@ commands/render.md
 
 ## Related
 
-- MCP server source & docs: [`my-architect-ai-mcp`](../my-architect-ai-mcp)
+- MCP server source & docs: [`myarchitectai-api-mcp`](https://github.com/MyArchitectAI/myarchitectai-api-mcp)
+
+## Contributing
+
+Issues and PRs are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md), the
+[Code of Conduct](./CODE_OF_CONDUCT.md), and the [Security Policy](./SECURITY.md) for reporting
+vulnerabilities privately. CI validates the plugin manifests on every PR (`node scripts/validate.mjs`).
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) © MyArchitectAI

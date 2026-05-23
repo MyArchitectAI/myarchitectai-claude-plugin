@@ -1,0 +1,64 @@
+name: Bug report
+description: Report a problem with the MyArchitectAI Claude Code plugin
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug! A couple of notes:
+        - **Never paste your full API key.**
+        - Bugs in the rendering **tools / server behavior** belong in the
+          [MCP server repo](https://github.com/MyArchitectAI/myarchitectai-api-mcp/issues).
+          File issues with the **command, skill, install, or MCP launch** here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and what you expected instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which part of the plugin?
+      options:
+        - "/myarchitectai:render command"
+        - "/myarchitectai:compare-renders skill"
+        - Install / marketplace
+        - MCP server launch (plugin-mcp.json)
+        - Other (note in description)
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. /plugin install myarchitectai@myarchitectai
+        2. /myarchitectai:render https://… exterior
+        3. Observed: …
+    validations:
+      required: true
+  - type: input
+    id: cc-version
+    attributes:
+      label: Claude Code version
+      description: "Run `claude --version`."
+      placeholder: "2.1.x"
+    validations:
+      required: false
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: "0.1.0"
+    validations:
+      required: false
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / error output
+      description: Relevant error text. **Redact your API key.**
+      render: shell
+    validations:
+      required: false
