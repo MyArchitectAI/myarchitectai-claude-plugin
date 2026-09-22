@@ -1,0 +1,38 @@
+name: Claude Changelog
+
+# On a PR, ensure CHANGELOG.md has an [Unreleased] entry for user-facing changes.
+# Claude edits CHANGELOG.md and commits it back to the PR branch; its app-token
+# commits don't re-trigger workflows (no loop). Skips fork PRs.
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: read
+  id-token: write
+
+jobs:
+  changelog:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Inspect this PR's diff. If it makes a user-facing change to the plugin (its
+            command, skill, manifests, or MCP launch config — not internal, CI, or docs
+            changes), ensure CHANGELOG.md has a matching [Unreleased] entry in Keep a
+            Changelog style, as one concise bullet. If an accurate entry already exists,
+            or the change isn't user-facing, make NO changes. Edit and commit only
+            CHANGELOG.md.
+          claude_args: |
+            --max-turns 8
+            --model claude-sonnet-4-6
