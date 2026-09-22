@@ -3,7 +3,7 @@
     "myarchitectai": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@myarchitectai/mcp"],
+      "args": ["-y", "@myarchitectai/mcp@0.2.0"],
       "env": {
         "MYARCHITECTAI_API_KEY": "${user_config.api_key}"
       }
