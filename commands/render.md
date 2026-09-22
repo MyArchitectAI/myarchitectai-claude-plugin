@@ -2,16 +2,16 @@
 name: render
 description: Guided MyArchitectAI render — validate an input image URL, generate an exterior or interior render, then preview and save the result.
 argument-hint: [image-url] [exterior|interior] [optional style notes]
-allowed-tools: mcp__myarchitectai__validate_image_url mcp__myarchitectai__render_exterior mcp__myarchitectai__render_interior mcp__myarchitectai__preview_image mcp__myarchitectai__save_image mcp__myarchitectai__usage_summary
+allowed-tools: mcp__plugin_myarchitectai_myarchitectai__validate_image_url mcp__plugin_myarchitectai_myarchitectai__render_exterior mcp__plugin_myarchitectai_myarchitectai__render_interior mcp__plugin_myarchitectai_myarchitectai__preview_image mcp__plugin_myarchitectai_myarchitectai__save_image mcp__plugin_myarchitectai_myarchitectai__usage_summary mcp__plugin_myarchitectai_myarchitectai__balance
 ---
 
 Run a complete render workflow for: $ARGUMENTS
 
 1. **Parse** the arguments: an image URL, an optional kind (`exterior` or `interior`, default `exterior`), and optional style notes used to build the prompt.
-2. **Validate** the URL first with `validate_image_url`. If it is not a reachable image, stop and report the problem — do **not** spend a credit.
-3. **Render** with `render_exterior` (or `render_interior` if requested) using `outputFormat: "jpg"`, passing a `prompt` built from the style notes when provided.
-4. **Preview** the result with `preview_image` so the user can see it.
-5. **Save** the result with `save_image`.
-6. Report the **cost and remaining balance** from the render result.
+2. **Validate** the URL first with `validate_image_url`. If it is not a reachable image, stop and report the problem before making a paid request.
+3. **Render** once with `render_exterior` (or `render_interior` if requested), passing the source URL as `image`, `outputFormat: "jpg"`, and a `prompt` built from the style notes when provided. Do not add a paid `auto_prompt` call unless the user asks for it.
+4. **Preview** each returned image URL from the render result's `structuredContent.output` array with `preview_image` so the user can see it.
+5. **Save** the rendered images with `save_image` and report the saved paths. A preview or save failure does not require another render; retain the generated URLs so those steps can be retried separately.
+6. Report the **cost and remaining balance in USD** from `structuredContent.cost` and `structuredContent.balance`, plus `requestId` when present. Use the read-only `balance` tool if the user asks for the current account balance; `usage_summary` reports session totals and a last-known balance.
 
-If any step fails, report the error clearly and stop before spending further credits.
+If a paid call fails, stop and report the error and any request ID. The MCP handles retries only for explicitly uncharged HTTP 429/502 responses. Do not manually repeat a paid call after a timeout, connection failure, or other uncertain result; inspect the API request log first to avoid a duplicate charge.
