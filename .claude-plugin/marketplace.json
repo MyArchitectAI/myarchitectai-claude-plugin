@@ -3,14 +3,14 @@
   "owner": { "name": "Justin Clapperton" },
   "metadata": {
     "description": "MyArchitectAI tools for Claude.",
-    "version": "0.2.0"
+    "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "myarchitectai",
       "source": "./",
       "description": "17 MyArchitectAI tools for Claude: rendering, editing, textures, atmosphere, animation, prompts, style transfer, text-to-image, 4K/8K upscale, balance, and image utilities, with render and comparison workflows.",
-      "version": "0.2.0",
+      "version": "1.0.0",
       "author": { "name": "Justin Clapperton" },
       "homepage": "https://www.myarchitectai.com",
       "license": "MIT",
