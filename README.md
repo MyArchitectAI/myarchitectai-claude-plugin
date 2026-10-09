@@ -1,6 +1,6 @@
 # MyArchitectAI — Claude Code plugin
 
-A [Claude Code](https://code.claude.com) plugin that bundles [MyArchitectAI MCP 0.2.0](https://www.npmjs.com/package/@myarchitectai/mcp/v/0.2.0), a render-comparison skill, and a guided render command.
+A [Claude Code](https://code.claude.com) plugin that bundles [MyArchitectAI MCP 1.0.0](https://www.npmjs.com/package/@myarchitectai/mcp/v/1.0.0), a render-comparison skill, and a guided render command.
 
 ## What's included
 
@@ -30,11 +30,15 @@ A [Claude Code](https://code.claude.com) plugin that bundles [MyArchitectAI MCP 
 
 Generation tools, including `auto_prompt`, charge the API account in USD. `balance` and the five utilities have no MyArchitectAI API charge. Image results contain an output URL array; `auto_prompt` returns text and `animate` returns video URLs. Image preview/save tools do not handle video. At 8K, upscale output must be JPG or WebP; AVIF is unsupported for upscale. See the [MCP tool reference](https://github.com/MyArchitectAI/myarchitectai-api-mcp#features) for parameters.
 
-Paid calls automatically retry only explicitly uncharged HTTP 429/502 responses. After a timeout or uncertain failure, inspect the API request log before repeating a paid call. If previewing or saving fails, reuse the generated URL instead of generating again.
+Paid calls automatically retry only explicitly uncharged HTTP 429/502 responses without a content-safety code. After a timeout or uncertain failure, inspect the API request log before repeating a paid call. If previewing or saving fails, reuse the generated URL instead of generating again.
+
+Content-safety failures return `isError: true` and `structuredContent` with `error`, `code`, and any provided `cost`, `balance`, and `requestId`. `CONTENT_POLICY_VIOLATION` reports `Request blocked by content policy`; a positive final `cost` remains charged without a usable output. `SAFETY_CHECK_UNAVAILABLE` reports `Content safety check unavailable` and follows the refund path: `cost` becomes `0` when the refund succeeds, but may remain positive if it fails. Report the returned final cost and balance rather than assuming a refund. Neither code triggers automatic retries or provider fallback, including at HTTP 429/502. An unavailable check may be retried later only by an explicit user decision.
+
+`usage_summary` includes retained positive policy charges in USD totals and counts rejected requests as failed generations. Successful-generation counts and `list_recent_generations` still include successful outputs only.
 
 ## Install
 
-Requires Node.js 18 or newer with `npx`, Claude Code with plugin support, and a [MyArchitectAI API key](https://portal.myarchitectai.com).
+Requires Node.js 18.14.1 or newer with `npx`, Claude Code with plugin support, and a [MyArchitectAI API key](https://portal.myarchitectai.com).
 
 ```
 /plugin marketplace add MyArchitectAI/myarchitectai-claude-plugin
@@ -52,11 +56,11 @@ For an existing installation, refresh the marketplace and update the plugin:
 /plugin update myarchitectai@myarchitectai
 ```
 
-Start a new Claude Code session and check `/mcp` for the `myarchitectai` server. Plugin 0.2.0 launches MCP 0.2.0 with 17 tools. See [CHANGELOG.md](./CHANGELOG.md) for changes.
+Start a new Claude Code session and check `/mcp` for the `myarchitectai` server. Plugin 1.0.0 launches MCP 1.0.0 with 17 tools. See [CHANGELOG.md](./CHANGELOG.md) for changes.
 
 ## How the MCP server is launched
 
-[`plugin-mcp.json`](./plugin-mcp.json) runs `npx -y @myarchitectai/mcp@0.2.0`. The exact version keeps the tool contract aligned with this plugin release; future MCP upgrades require a plugin update.
+[`plugin-mcp.json`](./plugin-mcp.json) runs `npx -y @myarchitectai/mcp@1.0.0`. The exact version keeps the tool contract aligned with this plugin release; future MCP upgrades require a plugin update.
 
 **Local development:** build the MCP source with `npm run build` in its repository, then replace the launch command and arguments in your local `plugin-mcp.json` with the absolute path to that build:
 
